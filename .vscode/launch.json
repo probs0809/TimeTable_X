@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "com.javamini.timetable.Main",
+            "projectName": "TimeTable"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MyForm",
+            "request": "launch",
+            "mainClass": "com.javamini.timetable.MyForm",
+            "projectName": "TimeTable"
+        }
+    ]
+}
