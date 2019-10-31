@@ -47,7 +47,7 @@ public class MainMenu extends javax.swing.JFrame {
         man_sub.setForeground(new java.awt.Color(255, 255, 255));
         man_sub.setText("MANAGE SUBJECTS");
         man_sub.setToolTipText("");
-        man_sub.setBorder(null);
+        man_sub.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 204)));
         man_sub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 man_subActionPerformed(evt);
