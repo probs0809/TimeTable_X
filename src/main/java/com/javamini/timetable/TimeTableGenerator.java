@@ -16,37 +16,37 @@ import java.util.logging.Logger;
  */
 
 
-public class Utility {
+public class TimeTableGenerator {
     
     static DatabaseConnection db = new DatabaseConnection();
     static boolean cli = false;
     
     public static void printInputData(){
         
-        System.out.println("Nostgrp="+inputdata.nostudentgroup+" Noteachers="+inputdata.noteacher+" daysperweek="+inputdata.daysperweek+" hoursperday="+inputdata.hoursperday);
-        for(int i=0;i<inputdata.nostudentgroup;i++){
+        System.out.println("Nostgrp="+AssignTeacher.nostudentgroup+" Noteachers="+AssignTeacher.noteacher+" daysperweek="+AssignTeacher.daysperweek+" hoursperday="+AssignTeacher.hoursperday);
+        for(int i=0;i<AssignTeacher.nostudentgroup;i++){
 
-            System.out.println(inputdata.studentgroup[i].id+" "+inputdata.studentgroup[i].name);
-            for(int j=0;j<inputdata.studentgroup[i].nosubject;j++){
-                System.out.println(inputdata.studentgroup[i].subjectid[j]+" "+inputdata.studentgroup[i].hours[j]+" hrs "+new Teacher().getTeacherName(inputdata.studentgroup[i].teacherid[j]) +" "+inputdata.studentgroup[i].teacherid[j]); 
+            System.out.println(AssignTeacher.studentgroup[i].id+" "+AssignTeacher.studentgroup[i].name);
+            for(int j=0;j<AssignTeacher.studentgroup[i].nosubject;j++){
+                System.out.println(AssignTeacher.studentgroup[i].subjectid[j]+" "+AssignTeacher.studentgroup[i].hours[j]+" hrs "+new Teacher().getTeacherName(AssignTeacher.studentgroup[i].teacherid[j]) +" "+AssignTeacher.studentgroup[i].teacherid[j]); 
                     
             }
             System.out.println("");
         }
 
-        for(int i=0;i<inputdata.noteacher;i++){			
-            System.out.println(inputdata.teacher[i].id+" "+inputdata.teacher[i].name+" "+inputdata.teacher[i].subject+" "+inputdata.teacher[i].assigned);
+        for(int i=0;i<AssignTeacher.noteacher;i++){			
+            System.out.println(AssignTeacher.teacher[i].id+" "+AssignTeacher.teacher[i].name+" "+AssignTeacher.teacher[i].subject+" "+AssignTeacher.teacher[i].assigned);
         }
     }
 	
 	
     public static void printSlots(){
-        int days=inputdata.daysperweek;
-        int hours=inputdata.hoursperday;
-        int nostgrp=inputdata.nostudentgroup;
+        int days=AssignTeacher.daysperweek;
+        int hours=AssignTeacher.hoursperday;
+        int nostgrp=AssignTeacher.nostudentgroup;
         System.out.println("----Slots----");
         for(int i=0;i<days*hours*nostgrp;i++){
-            System.out.println(i+"- "+TimeTable.slot[i].studentgroup.id+" "+TimeTable.slot[i].subject+" "+new Teacher().getTeacherName(TimeTable.slot[i].teacherid));
+            System.out.println(i+"- "+SlotGenerator.slot[i].studentgroup.id+" "+SlotGenerator.slot[i].subject+" "+new Teacher().getTeacherName(SlotGenerator.slot[i].teacherid));
 
             if((i+1)%(hours*days)==0) System.out.println("******************************");
         }
@@ -54,9 +54,9 @@ public class Utility {
     
     
     public static void generateTimeTable(int GrpId, ArrayList<String> day, ArrayList<String> hour){
-         int days=inputdata.daysperweek;
-        int hours=inputdata.hoursperday;
-        int nostgrp=inputdata.nostudentgroup;
+         int days=AssignTeacher.daysperweek;
+        int hours=AssignTeacher.hoursperday;
+        int nostgrp=AssignTeacher.nostudentgroup;
         int arr2[][] = new int[days][hours];
         
         db.executeUpdate("DELETE FROM TimeTable WHERE GrpId = " + GrpId);
@@ -65,9 +65,9 @@ public class Utility {
         System.out.println("----Slots----");
         ArrayList<Integer> arr = new ArrayList<>();
         for(int i=0;i<days*hours*nostgrp;i++){
-            if(TimeTable.slot[i].studentgroup.id == GrpId){
+            if(SlotGenerator.slot[i].studentgroup.id == GrpId){
                 arr.add(i);
-                System.out.println(TimeTable.slot[i].subject + " : " + i);
+                System.out.println(SlotGenerator.slot[i].subject + " : " + i);
             }
                 
         }
@@ -102,7 +102,7 @@ public class Utility {
             String sHour = s.nextLine();
             System.out.println("Lecture: ");
             int sLecture = scan.nextInt();
-            ResultSet rs=db.executeQuery("SELECT TeacherId FROM TimeTable WHERE Day = '"+sDay+"' AND Hour = '"+sHour+"' AND TeacherId = "+TimeTable.slot[sLecture].teacherid);
+            ResultSet rs=db.executeQuery("SELECT TeacherId FROM TimeTable WHERE Day = '"+sDay+"' AND Hour = '"+sHour+"' AND TeacherId = "+SlotGenerator.slot[sLecture].teacherid);
              try {
                  if(!rs.next()){
                      arr2[day.indexOf(sDay)][hour.indexOf(sHour)] = sLecture;
@@ -122,8 +122,8 @@ public class Utility {
      
     
     public static void autoGenerator(ArrayList<Integer> arr,int arr2[][], ArrayList<String> day, ArrayList<String> hour){
-        int days=inputdata.daysperweek;
-        int hours=inputdata.hoursperday;
+        int days=AssignTeacher.daysperweek;
+        int hours=AssignTeacher.hoursperday;
         
         Random r = new Random();
         System.out.println(arr);
@@ -133,12 +133,12 @@ public class Utility {
             int d = r.nextInt(days);
             int h = r.nextInt(hours);
             if(arr2[d][h] == 0){
-                if(h == hours/2 && "FR-0000".equals(TimeTable.slot[arr.get(k)].subject) ){
+                if(h == hours/2 && "FR-0000".equals(SlotGenerator.slot[arr.get(k)].subject) ){
                     arr2[d][h] = arr.get(k);
                     arr.remove(k);
                 }
                 else if( h!=hours/2 ){
-                    ResultSet rs=db.executeQuery("SELECT TeacherId FROM TimeTable WHERE Day = '"+d+"' AND Hour = '"+h+"' AND TeacherId = "+TimeTable.slot[k].teacherid);
+                    ResultSet rs=db.executeQuery("SELECT TeacherId FROM TimeTable WHERE Day = '"+d+"' AND Hour = '"+h+"' AND TeacherId = "+SlotGenerator.slot[k].teacherid);
                     try {
                         if(!rs.next()){
                             arr2[d][h] = arr.get(k);
@@ -147,7 +147,7 @@ public class Utility {
                             
                         }
                     } catch (SQLException ex) {
-                        Logger.getLogger(Utility.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(TimeTableGenerator.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
                 }
@@ -158,8 +158,8 @@ public class Utility {
      
         for(int i = 0 ; i < arr2.length ; i++){     
             for(int j = 0 ; j < arr2[i].length; j++){
-                db.executeUpdate("INSERT INTO TimeTable(Day,Hour,SubId,GrpId,TeacherId) VALUES('"+day.get(i)+"','"+hour.get(j)+"','"+TimeTable.slot[arr2[i][j]].subject+"',"+TimeTable.slot[arr2[i][j]].studentgroup.id+","+TimeTable.slot[arr2[i][j]].teacherid+")");
-                System.out.println(day.get(i)+" : " + hour.get(j)+ " - " + TimeTable.slot[arr2[i][j]].subject+ " ");
+                db.executeUpdate("INSERT INTO TimeTable(Day,Hour,SubId,GrpId,TeacherId) VALUES('"+day.get(i)+"','"+hour.get(j)+"','"+SlotGenerator.slot[arr2[i][j]].subject+"',"+SlotGenerator.slot[arr2[i][j]].studentgroup.id+","+SlotGenerator.slot[arr2[i][j]].teacherid+")");
+                System.out.println(day.get(i)+" : " + hour.get(j)+ " - " + SlotGenerator.slot[arr2[i][j]].subject+ " ");
             }   
         }
     }

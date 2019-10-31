@@ -11,11 +11,11 @@ package com.javamini.timetable;
  */
 //through this class slots are generated to match minimum hours criteria for each subjectid
 //also this class holds slots in order
-public class TimeTable {
+public class SlotGenerator {
 
 	public static Slot[] slot;
 
-    TimeTable() {
+    SlotGenerator() {
 
         DatabaseConnection db = new DatabaseConnection();
         db.executeUpdate("DELETE FROM Slots");
@@ -23,9 +23,9 @@ public class TimeTable {
         int k = 0;
         int subjectno = 0;
         int hourcount = 1;
-        int days = inputdata.daysperweek;
-        int hours = inputdata.hoursperday;
-        int nostgrp = inputdata.nostudentgroup;
+        int days = AssignTeacher.daysperweek;
+        int hours = AssignTeacher.hoursperday;
+        int nostgrp = AssignTeacher.nostudentgroup;
 
         // creating as many slots as the no of blocks in overall timetable
         slot = new Slot[hours * days * nostgrp];
@@ -38,7 +38,7 @@ public class TimeTable {
                 int hr = 0;
             for (int j = 0; j < hours * days; j++) {
 
-                StudentGroup sg = inputdata.studentgroup[i];
+                StudentGroup sg = AssignTeacher.studentgroup[i];
 
                 // if all subjects have been assigned required hours we give
                 // free periods

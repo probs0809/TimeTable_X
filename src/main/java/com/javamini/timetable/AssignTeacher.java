@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class inputdata {
+public class AssignTeacher {
 
     public static StudentGroup[] studentgroup;
     public static Teacher[] teacher;
@@ -23,7 +23,7 @@ public class inputdata {
     public static int hoursperday, daysperweek;
     DatabaseConnection db = new DatabaseConnection();
 
-    public inputdata() {
+    public AssignTeacher() {
         studentgroup = new StudentGroup[100];
         teacher =   new Teacher[100];
     }
@@ -51,12 +51,12 @@ public class inputdata {
                     nostudentgroup = i;
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(inputdata.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AssignTeacher.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 rs.close();
             } catch (SQLException ex) {
-                Logger.getLogger(inputdata.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AssignTeacher.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             rs = db.executeQuery("SELECT * FROM Teacher");
@@ -89,7 +89,7 @@ public class inputdata {
             try {
                 rs.close();
             } catch (SQLException ex) {
-                Logger.getLogger(inputdata.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AssignTeacher.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         
