@@ -7,6 +7,8 @@ package com.javamini.timetable;
 
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author prabodhmayekar
@@ -18,7 +20,7 @@ public class StudentGroup {
     public int nosubject;
     public int teacherid[];
     public int[] hours;
-    DatabaseConnection db = new DatabaseConnection();
+    static DatabaseConnection db = new DatabaseConnection();
 
     public StudentGroup() {
         subjectid = new String[10];
@@ -76,6 +78,18 @@ public class StudentGroup {
     
     public void deleteRecord(int id){
         db.executeUpdate("DELETE FROM StudentGroup WHERE GrpId = "+id);
+    }
+    
+    static int getId(String Name){
+        ResultSet rs = db.executeQuery("SELECT * FROM StudentGroup WHERE GrpName = '"+Name+"'");
+        try {
+            if(rs.next()){
+                return rs.getInt("GrpId");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentGroup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -2;
     }
     
     

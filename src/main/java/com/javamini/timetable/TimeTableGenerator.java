@@ -5,6 +5,8 @@
  */
 package com.javamini.timetable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 import java.sql.*;
@@ -17,6 +19,7 @@ import java.util.logging.Logger;
 
 
 public class TimeTableGenerator {
+    static SplashScreen ss =new SplashScreen();
     
     static DatabaseConnection db = new DatabaseConnection();
     static boolean cli = false;
@@ -53,10 +56,11 @@ public class TimeTableGenerator {
     }
     
     
-    public static void generateTimeTable(int GrpId, ArrayList<String> day, ArrayList<String> hour){
-         int days=AssignTeacher.daysperweek;
-        int hours=AssignTeacher.hoursperday;
-        int nostgrp=AssignTeacher.nostudentgroup;
+    public static void generateTimeTable(int GrpId, ArrayList<String> day, ArrayList<String> hour, GenerateTimeTable genTimeTable,ViewTimeTable v){
+        int days = AssignTeacher.daysperweek;
+        int hours = AssignTeacher.hoursperday;
+        int nostgrp = AssignTeacher.nostudentgroup;
+        v.GrpId = GrpId;
         int arr2[][] = new int[days][hours];
         
         db.executeUpdate("DELETE FROM TimeTable WHERE GrpId = " + GrpId);
@@ -77,13 +81,9 @@ public class TimeTableGenerator {
             cliMode(arr, arr2, day, hour);
         }
         else{
-            guiMode(arr, arr2, day, hour);
+           guiMode(arr, arr2, day, hour,genTimeTable,v);
         }
-        
-        
-        
-        
-        
+            
     }
     
     
@@ -164,7 +164,81 @@ public class TimeTableGenerator {
         }
     }
 
-    private static void guiMode(ArrayList<Integer> arr, int[][] arr2, ArrayList<String> day, ArrayList<String> hour) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void guiMode(ArrayList<Integer> arr, int[][] arr2, ArrayList<String> day, ArrayList<String> hour,GenerateTimeTable generateTimeTable, ViewTimeTable v) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
+        initInput(arr,day,hour,generateTimeTable);
+        
+        generateTimeTable.addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                String sDay = generateTimeTable.day.getItemAt(generateTimeTable.day.getSelectedIndex());
+                String sHour = generateTimeTable.hour.getItemAt(generateTimeTable.hour.getSelectedIndex());
+                int subIndex = generateTimeTable.sub.getSelectedIndex();
+                ss.progressBar.setValue(50);
+                
+                if(sDay.equals("Select Day") || sHour.equals("Select Hour") || subIndex == 0){
+                    
+                }else{
+                   int sLecture = arr.get(subIndex-1); 
+                   ResultSet rs=db.executeQuery("SELECT TeacherId FROM TimeTable WHERE Day = '"+sDay+"' AND Hour = '"+sHour+"' AND TeacherId = "+SlotGenerator.slot[sLecture].teacherid);
+                    try {
+                        if(!rs.next()){
+                            arr2[day.indexOf(sDay)][hour.indexOf(sHour)] = sLecture;
+                            arr.remove(arr.indexOf(arr2[day.indexOf(sDay)][hour.indexOf(sHour)]));
+                            initInput(arr,day,hour,generateTimeTable);
+                        }else{
+                            System.out.println("Sorry the teacher is busy");
+                        }
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+                ss.progressBar.setValue(80);
+                ss.dispose();
+            }
+        });
+        
+        generateTimeTable.auto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
+                autoGenerator(arr,arr2,day,hour);
+                generateTimeTable.dispose();
+                v.initInput();
+                v.setVisible(true);
+            }
+        });
+        System.out.println("Sucessfuly reached in gui");       
+    }
+    
+    private static void initInput(ArrayList<Integer> arr,ArrayList<String> day, ArrayList<String> hour,GenerateTimeTable generateTimeTable){
+        
+        generateTimeTable.day.removeAllItems();
+        generateTimeTable.day.addItem("Select Day");
+        day.forEach((day1) -> {
+            generateTimeTable.day.addItem(day1);
+        });
+        generateTimeTable.day.setSelectedIndex(0);
+        
+        
+        generateTimeTable.hour.removeAllItems();
+        generateTimeTable.hour.addItem("Select Hour");
+        hour.forEach((hr) -> {
+            generateTimeTable.hour.addItem(hr);
+        });
+        generateTimeTable.hour.setSelectedIndex(0);
+        
+        generateTimeTable.sub.removeAllItems();
+        generateTimeTable.sub.addItem("Select Subject");
+        arr.forEach((ar) -> {
+            generateTimeTable.sub.addItem(Subject.getSubjectName(SlotGenerator.slot[ar].subject));
+        });
+        generateTimeTable.sub.setSelectedIndex(0);
+        
+        
     }
 }

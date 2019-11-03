@@ -19,7 +19,7 @@ public class Teacher {
     ArrayList<String> subject;
     int assigned;
     
-    private DatabaseConnection db = new DatabaseConnection();
+    static DatabaseConnection db = new DatabaseConnection();
     
     public int getId() {
             return id;
@@ -50,7 +50,7 @@ public class Teacher {
         db.executeUpdate("UPDATE Teacher SET assign = "+this.assigned+" WHERE TeacherId = "+this.id);
     }
     
-    public void addToRecored(String name){
+    public static void addToRecored(String name){
         db.executeUpdate("INSERT INTO Teacher(TeacherName, assign) VALUES('"+name+"',0)");
     }
     
