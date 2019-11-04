@@ -11,7 +11,6 @@ import java.util.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 /**
@@ -473,9 +472,6 @@ public class TimeTablePlusPlus {
 
         splash.progressBar.setValue(90);
         splash.setVisible(false);
-        mainMenu.setVisible(true);
-        
-                  
-        
+        mainMenu.setVisible(true);       
     }
 }

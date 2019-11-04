@@ -64,8 +64,5 @@ public class DatabaseConnection {
         catch(Exception e){
             e.printStackTrace();
         }
-    }
-    
-    
+    }   
 }
-  
