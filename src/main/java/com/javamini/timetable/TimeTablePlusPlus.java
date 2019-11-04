@@ -460,16 +460,18 @@ public class TimeTablePlusPlus {
                String GrpName = manageTimeTable.groupName.getItemAt(manageTimeTable.groupName.getSelectedIndex());
                int GrpId = StudentGroup.getId(GrpName);
                if(GrpId != -2){
-                   viewTimeTable.GrpId = GrpId;
-                   viewTimeTable.initInput();
+                   
+                   viewTimeTable.GrpId = GrpId; 
                    manageTimeTable.dispose();
+                   viewTimeTable.initInput();
                    viewTimeTable.setVisible(true);
+                   System.out.println(GrpId + " "+ GrpName);
                }
             }
         });
 
         splash.progressBar.setValue(90);
-        splash.dispose();
+        splash.setVisible(false);
         mainMenu.setVisible(true);
         
                   

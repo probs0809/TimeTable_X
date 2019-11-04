@@ -71,7 +71,7 @@ public class ManageTimeTable extends javax.swing.JFrame {
         viewTimeTable.setForeground(new java.awt.Color(255, 255, 255));
         viewTimeTable.setText("View Time Table");
         viewTimeTable.setToolTipText("");
-        viewTimeTable.setBorder(null);
+        viewTimeTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 102)));
         viewTimeTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewTimeTableActionPerformed(evt);

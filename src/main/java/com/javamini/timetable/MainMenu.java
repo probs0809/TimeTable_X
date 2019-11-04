@@ -70,7 +70,7 @@ public class MainMenu extends javax.swing.JFrame {
         man_tt.setForeground(new java.awt.Color(255, 255, 255));
         man_tt.setText("MANAGE TIMETABLE");
         man_tt.setToolTipText("");
-        man_tt.setBorder(null);
+        man_tt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 102)));
         man_tt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 man_ttActionPerformed(evt);

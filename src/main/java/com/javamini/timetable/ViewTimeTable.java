@@ -25,6 +25,7 @@ public class ViewTimeTable extends javax.swing.JFrame {
     public ArrayList<JLabel> thu ;
     public ArrayList<JLabel> fri ;
     public ArrayList<JLabel> sat ;
+    SplashScreen splash = new SplashScreen();
 
 
             
@@ -42,6 +43,8 @@ public class ViewTimeTable extends javax.swing.JFrame {
     }
     
     public void initInput(){
+        setToNull();
+        splash.setVisible(true);
         ResultSet rs = db.executeQuery("SELECT * FROM TimeTable WHERE GrpId = "+GrpId);
         try {
             while(rs.next()){
@@ -52,40 +55,62 @@ public class ViewTimeTable extends javax.swing.JFrame {
                     rs.next();
                 }
                 i=0;
+                splash.progressBar.setValue(20);
                 while(rs.getString("Day").equalsIgnoreCase("TUESDAY")){
                     tue.get(i).setText("<html>"+Subject.getSubjectName(rs.getString("SubId"))+" :</br> "+ new Teacher().getTeacherName(rs.getInt("TeacherId"))+"</html>");
                     i++;
                     rs.next();
                 }
                 i=0;
+                splash.progressBar.setValue(40);
                 while(rs.getString("Day").equalsIgnoreCase("WENESDAY")){
                     wed.get(i).setText("<html>"+Subject.getSubjectName(rs.getString("SubId"))+" :</br> "+ new Teacher().getTeacherName(rs.getInt("TeacherId"))+"</html>");
                     i++;
                     rs.next();
                 }
                 i=0;
+                splash.progressBar.setValue(60);
                 while(rs.getString("Day").equalsIgnoreCase("THURSDAY")){
                     thu.get(i).setText("<html>"+Subject.getSubjectName(rs.getString("SubId"))+" :</br> "+ new Teacher().getTeacherName(rs.getInt("TeacherId"))+"</html>");
                     i++;
                     rs.next();
                 }
                 i=0;
+                splash.progressBar.setValue(80);
                 while(rs.getString("Day").equalsIgnoreCase("FRIDAY")){
                     fri.get(i).setText("<html>"+Subject.getSubjectName(rs.getString("SubId"))+" :</br> "+ new Teacher().getTeacherName(rs.getInt("TeacherId"))+"</html>");
                     i++;
                     rs.next();
                 }
                 i=0;
+                splash.progressBar.setValue(90);
                 while(rs.getString("Day").equalsIgnoreCase("SATURDAY")){
                     sat.get(i).setText("<html>"+Subject.getSubjectName(rs.getString("SubId"))+" :</br> "+ new Teacher().getTeacherName(rs.getInt("TeacherId"))+"</html>");
                     i++;
                     rs.next();
                 }
                 
+                
             }
+            
         } catch (SQLException ex) {
             //Logger.getLogger(ViewTimeTable.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
+        splash.setVisible(false);
+        splash.dispose();
+    }
+    
+    public void setToNull(){
+        for (int i = 0; i < 7; i++) {
+             mon.get(i).setText(" ");
+             tue.get(i).setText(" ");
+             wed.get(i).setText(" ");
+             thu.get(i).setText(" ");
+             fri.get(i).setText(" ");
+             sat.get(i).setText(" ");
+        }
+       
     }
 
     /**
