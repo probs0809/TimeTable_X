@@ -411,6 +411,7 @@ public class TimeTablePlusPlus {
                 if(SubId.equals("Select Subject")){
                     JOptionPane.showMessageDialog(null, "Problem with input");
                 }else{
+                    SubId =Subject.getSubjectId(SubId);
                     db.executeUpdate("DELETE FROM Subject WHERE SubId = '"+SubId+"'");
                     manageSubjects.initInput();
                     JOptionPane.showMessageDialog(null, "Success :)");
