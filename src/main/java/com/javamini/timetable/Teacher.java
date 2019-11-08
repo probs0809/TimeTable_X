@@ -34,7 +34,7 @@ public class Teacher {
             this.name = name;
     }
 
-    public int getAssigned(int id){
+    static public int getAssigned(int id){
         int ass = 0;
         ResultSet rs = db.executeQuery("SELECT assign FROM Teacher WHERE TeacherId = "+id);
         try{
