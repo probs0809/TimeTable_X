@@ -27,7 +27,7 @@ public class ManageGroups extends javax.swing.JFrame {
      */
     public ManageGroups() {
         initComponents();
-        initInput();
+        
         jp.add(pan1);
         jp.add(pan2);
         jp.add(pan3);
@@ -69,17 +69,7 @@ public class ManageGroups extends javax.swing.JFrame {
         add.add(add9);
         add.add(add10);
         
-        for(int i = 0; i<add.size();i++){
-            add.get(i).setOpaque(true);
-        }
-        
-        for(int i = 0; i<hr.size();i++){
-            hr.get(i).addItem("Hours");
-            for(int j = 1 ;j<= 4;j++){
-                hr.get(i).addItem(Integer.toString(j));
-            }
-            hr.get(i).setSelectedIndex(0);
-        }
+       initInput();
         
         
         
@@ -91,6 +81,11 @@ public class ManageGroups extends javax.swing.JFrame {
         noOfSubjects.removeAllItems();
         deleteGroupName.removeAllItems();
         ashGroup.removeAllItems();
+        
+        
+        
+        
+        
         noOfSubjects.addItem("Select no of subjects");
         for(int i = 1; i<=10 ; i++){
             noOfSubjects.addItem(Integer.toString(i));
@@ -115,6 +110,23 @@ public class ManageGroups extends javax.swing.JFrame {
     }
     
     public void initSH(){
+        for(int i=0; i<hr.size();i++){
+                hr.get(i).removeAllItems();
+        }
+        
+        for(int i = 0; i<hr.size();i++){
+            hr.get(i).addItem("Hours");
+            for(int j = 1 ;j<= 4;j++){
+                hr.get(i).addItem(Integer.toString(j));
+            }
+            hr.get(i).setSelectedIndex(0);
+        }
+        
+        for(int i = 0; i<add.size();i++){
+            add.get(i).setOpaque(true);
+            add.get(i).setVisible(true);
+        }
+        
         for(int i = 0; i<jp.size();i++){
             jp.get(i).setVisible(false);
         }
