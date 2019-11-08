@@ -15,10 +15,10 @@ public class SlotGenerator {
 
 	public static Slot[] slot;
 
-    SlotGenerator() {
+    SlotGenerator(int GrpId) {
 
         DatabaseConnection db = new DatabaseConnection();
-        db.executeUpdate("DELETE FROM Slots");
+        //db.executeUpdate("DELETE FROM Slots WHERE GrpId = "+GrpId);
 
         int k = 0;
         int subjectno = 0;
@@ -36,40 +36,41 @@ public class SlotGenerator {
             subjectno = 0;
             // for every slot in a week for a student group
                 int hr = 0;
-            for (int j = 0; j < hours * days; j++) {
+            if(AssignTeacher.studentgroup[i].id == GrpId){
+                for (int j = 0; j < hours * days; j++) {
 
-                StudentGroup sg = AssignTeacher.studentgroup[i];
+                    StudentGroup sg = AssignTeacher.studentgroup[i];
 
-                // if all subjects have been assigned required hours we give
-                // free periods
+                    // if all subjects have been assigned required hours we give
+                    // free periods
 
-                if (subjectno >= sg.nosubject) {
-                    hr++;
-                    slot[k++] = new Slot(sg, -1, "FR-0000");
-                    db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'FR-0000',-1)");
+                    if (subjectno >= sg.nosubject) {
+                        hr++;
+                        slot[k++] = new Slot(sg, -1, "FR-0000");
+                       // db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'FR-0000',-1)");
 
-                    //slot[k++] = new Slot(sg, sg.teacherid[subjectno], sg.subjectid[subjectno]);
-                }
+                        //slot[k++] = new Slot(sg, sg.teacherid[subjectno], sg.subjectid[subjectno]);
+                    }
 
-                // if not we create new slots
-                else {
+                    // if not we create new slots
+                    else {
 
-                    slot[k++] = new Slot(sg, sg.teacherid[subjectno], sg.subjectid[subjectno]);
-                        db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'"+sg.subjectid[subjectno]+"',"+sg.teacherid[subjectno]+")");
+                        slot[k++] = new Slot(sg, sg.teacherid[subjectno], sg.subjectid[subjectno]);
+                         //   db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'"+sg.subjectid[subjectno]+"',"+sg.teacherid[subjectno]+")");
 
-                    // suppose java has to be taught for 5 hours then we make 5
-                    // slots for java, we keep track through hourcount
-                    if (hourcount < sg.hours[subjectno]) {
-                        hourcount++;
-                    } else {
-                        hourcount = 1;
-                        subjectno++;
+                        // suppose java has to be taught for 5 hours then we make 5
+                        // slots for java, we keep track through hourcount
+                        if (hourcount < sg.hours[subjectno]) {
+                            hourcount++;
+                        } else {
+                            hourcount = 1;
+                            subjectno++;
+                        }
+
                     }
 
                 }
-
             }
-
         }
 
     }

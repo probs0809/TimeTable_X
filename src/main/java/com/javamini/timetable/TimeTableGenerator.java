@@ -48,7 +48,7 @@ public class TimeTableGenerator {
         int hours=AssignTeacher.hoursperday;
         int nostgrp=AssignTeacher.nostudentgroup;
         System.out.println("----Slots----");
-        for(int i=0;i<days*hours*nostgrp;i++){
+        for(int i=0;i<days*hours;i++){
             System.out.println(i+"- "+SlotGenerator.slot[i].studentgroup.id+" "+SlotGenerator.slot[i].subject+" "+new Teacher().getTeacherName(SlotGenerator.slot[i].teacherid));
 
             if((i+1)%(hours*days)==0) System.out.println("******************************");
@@ -68,7 +68,7 @@ public class TimeTableGenerator {
         
         System.out.println("----Slots----");
         ArrayList<Integer> arr = new ArrayList<>();
-        for(int i=0;i<days*hours*nostgrp;i++){
+        for(int i=0;i<days*hours;i++){
             if(SlotGenerator.slot[i].studentgroup.id == GrpId){
                 arr.add(i);
                 System.out.println(SlotGenerator.slot[i].subject + " : " + i);

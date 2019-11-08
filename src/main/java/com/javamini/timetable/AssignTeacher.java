@@ -28,7 +28,7 @@ public class AssignTeacher {
         teacher =   new Teacher[100];
     }
 
-    public void takeinput()
+    public void takeinput(int GrpId)
     {
         
             ResultSet rs = db.executeQuery("SELECT * FROM StudentGroup");
@@ -93,48 +93,60 @@ public class AssignTeacher {
             }
 
         
-        assignTeacher();
+        assignTeacher(GrpId);
     }
 
     // assigning a teacher for each subjectid for every studentgroup
-    public void assignTeacher() {
+    public void assignTeacher(int GrpId) {
         // looping through every studentgroup
         for (int i = 0; i < nostudentgroup; i++) {
             // looping through every subjectid of a student group
-            for (int j = 0; j < studentgroup[i].nosubject; j++) {
-                int teacherid;
-                int assignedmin = -1;
-                String subject = studentgroup[i].subjectid[j];
-                // looping through every teacher to find which teacher teaches the current subjectid
-                for (int k = 0; k < noteacher; k++) {
-                    
-                  
-                    for(int l = 0 ; l < teacher[k].subject.size();l++ ){
-                        // if such teacher found,checking if he should be assigned the subjectid or some other teacher based on prior assignments
-                        //System.err.println(teacher[i].subject[l]);
+            if(studentgroup[i].id == GrpId){
+                ResultSet rs = db.executeQuery("SELECT TeacherId FROM TimeTable WHERE GrpId = "+GrpId);
+                try {
+                    while(rs.next()){
+                        if(Teacher.getAssigned(rs.getInt("TeacherId")) != 0 )
+                            db.executeUpdate("UPDATE Teacher SET assign = "+(Teacher.getAssigned(rs.getInt("TeacherId"))-1)+" WHERE TeacherId = " +rs.getInt("TeacherId"));
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(AssignTeacher.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                for (int j = 0; j < studentgroup[i].nosubject; j++) {
+                    int teacherid;
+                    int assignedmin = -1;
+                    String subject = studentgroup[i].subjectid[j];
+                    // looping through every teacher to find which teacher teaches the current subjectid
+                    for (int k = 0; k < noteacher; k++) {
 
-                        if (teacher[k].subject.get(l).equalsIgnoreCase(subject)) {
-                            // if first teacher found for this subjectid
-                            if (assignedmin == -1) {
-                                assignedmin = teacher[k].assigned;
-                                teacherid = k;
-                                teacher[teacherid].assigned++;
-                                studentgroup[i].teacherid[j]= teacher[k].id;
-                                db.executeUpdate("UPDATE SubHrs SET TeacherId = '"+teacher[k].id+"' WHERE GrpId = "+studentgroup[i].id+" AND SubId='"+subject+"'");
-                                teacher[teacherid].setAssigned();
-                            }
 
-                            // if teacher found has less no of pre assignments than the teacher assigned for this subjectid
-                            else if (assignedmin > teacher[k].assigned) {
-                                assignedmin = teacher[k].assigned;
-                                teacherid = k;
-                                teacher[teacherid].assigned++;
-                                studentgroup[i].teacherid[j]= teacher[k].id;
-                                db.executeUpdate("UPDATE SubHrs SET TeacherId = '"+teacher[k].id+"' WHERE GrpId = "+studentgroup[i].id+" AND SubId='"+subject+"'");
-                                teacher[teacherid].setAssigned();
+                        for(int l = 0 ; l < teacher[k].subject.size();l++ ){
+                            // if such teacher found,checking if he should be assigned the subjectid or some other teacher based on prior assignments
+                            //System.err.println(teacher[i].subject[l]);
+
+                            if (teacher[k].subject.get(l).equalsIgnoreCase(subject)) {
+                                // if first teacher found for this subjectid
+                                if (assignedmin == -1) {
+                                    //assignedmin = teacher[k].assigned;
+                                    assignedmin = Teacher.getAssigned(teacher[k].id);
+                                    teacherid = k;
+                                    teacher[teacherid].assigned = Teacher.getAssigned(teacher[k].id)+1;
+                                    studentgroup[i].teacherid[j]= teacher[k].id;
+                                    db.executeUpdate("UPDATE SubHrs SET TeacherId = '"+teacher[k].id+"' WHERE GrpId = "+studentgroup[i].id+" AND SubId='"+subject+"'");
+                                    teacher[teacherid].setAssigned();
+                                }
+
+                                // if teacher found has less no of pre assignments than the teacher assigned for this subjectid
+                                else if (assignedmin > teacher[k].assigned) {
+                                    assignedmin = Teacher.getAssigned(teacher[k].id);
+                                    teacherid = k;
+                                    teacher[teacherid].assigned = Teacher.getAssigned(teacher[k].id)+1;
+                                    studentgroup[i].teacherid[j]= teacher[k].id;
+                                    db.executeUpdate("UPDATE SubHrs SET TeacherId = '"+teacher[k].id+"' WHERE GrpId = "+studentgroup[i].id+" AND SubId='"+subject+"'");
+                                    teacher[teacherid].setAssigned();
+                                }
                             }
-                        }
-                    } 
+                        } 
+                    }
                 }
             }
         }

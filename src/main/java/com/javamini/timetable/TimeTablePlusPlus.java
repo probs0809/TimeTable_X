@@ -341,9 +341,11 @@ public class TimeTablePlusPlus {
             @Override
             public void actionPerformed(ActionEvent e) {
                 manageGroups.initSH();
+                //manageGroups.initInput();
                 try {
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     int n = 0;
+                    
                     String groupName = manageGroups.ashGroup.getItemAt(manageGroups.ashGroup.getSelectedIndex());
                     ResultSet rs = db.executeQuery("SELECT * FROM StudentGroup WHERE GrpName = '"+groupName+"'");
                     if (rs.next()) {
@@ -435,14 +437,14 @@ public class TimeTablePlusPlus {
                     generateTimeTable.initInput();
                     manageTimeTable.dispose();
                     AssignTeacher id = new AssignTeacher();   
-                    id.takeinput();
+                    id.takeinput(GrpId);
                     AssignTeacher.hoursperday = 7;
                     AssignTeacher.daysperweek = 5;
-                    new SlotGenerator();
+                    new SlotGenerator(generateTimeTable.GrpId);
                     TimeTableGenerator.cli = false;
                     splash.progressBar.setValue(50);
-                    TimeTableGenerator.printInputData();
-                    TimeTableGenerator.printSlots();
+                    //TimeTableGenerator.printInputData();
+                   // TimeTableGenerator.printSlots();
                     TimeTableGenerator.generateTimeTable(GrpId, day, hour, generateTimeTable,viewTimeTable);
                     splash.progressBar.setValue(90);
                     splash.dispose();
