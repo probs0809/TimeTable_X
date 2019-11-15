@@ -97,11 +97,13 @@ public class AssignTeacher {
     }
 
     // assigning a teacher for each subjectid for every studentgroup
+    //MODIFICATION:: ASSIGN TEACHER TO ONLY CERTAING GrpId
     public void assignTeacher(int GrpId) {
         // looping through every studentgroup
         for (int i = 0; i < nostudentgroup; i++) {
-            // looping through every subjectid of a student group
+            //** If the student froup is found
             if(studentgroup[i].id == GrpId){
+                // looping through every subjectid of a student group
                 ResultSet rs = db.executeQuery("SELECT TeacherId FROM TimeTable WHERE GrpId = "+GrpId);
                 try {
                     while(rs.next()){

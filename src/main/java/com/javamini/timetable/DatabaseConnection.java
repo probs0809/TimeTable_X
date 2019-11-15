@@ -26,10 +26,7 @@ public class DatabaseConnection {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             
             
-        }catch(SQLException se){
-            se.printStackTrace();
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(SQLException | ClassNotFoundException se){
         }
     }
     
@@ -40,8 +37,7 @@ public class DatabaseConnection {
     public void close(){
         try{
             conn.close();
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(SQLException e){
         }
     }
     
@@ -50,8 +46,7 @@ public class DatabaseConnection {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(SQLException e){
         }
         return rs;
     }
@@ -61,8 +56,7 @@ public class DatabaseConnection {
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(SQLException e){
         }
     }   
 }

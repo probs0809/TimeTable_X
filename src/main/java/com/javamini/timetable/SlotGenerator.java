@@ -9,8 +9,8 @@ package com.javamini.timetable;
  *
  * @author prabodhmayekar
  */
-//through this class slots are generated to match minimum hours criteria for each subjectid
-//also this class holds slots in order
+//The slot is the unit wich contains the GrpId, and information like no. of subjects and techer 
+//NOTE: Slot is not a time table
 public class SlotGenerator {
 
 	public static Slot[] slot;
@@ -35,7 +35,7 @@ public class SlotGenerator {
 
             subjectno = 0;
             // for every slot in a week for a student group
-                int hr = 0;
+            int hr = 0;
             if(AssignTeacher.studentgroup[i].id == GrpId){
                 for (int j = 0; j < hours * days; j++) {
 
@@ -56,8 +56,7 @@ public class SlotGenerator {
                     else {
 
                         slot[k++] = new Slot(sg, sg.teacherid[subjectno], sg.subjectid[subjectno]);
-                         //   db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'"+sg.subjectid[subjectno]+"',"+sg.teacherid[subjectno]+")");
-
+                        //db.executeUpdate("INSERT INTO Slots(SlotId, GrpId, SubId, TeacherId) VALUES("+(k-1)+","+sg.id+",'"+sg.subjectid[subjectno]+"',"+sg.teacherid[subjectno]+")");
                         // suppose java has to be taught for 5 hours then we make 5
                         // slots for java, we keep track through hourcount
                         if (hourcount < sg.hours[subjectno]) {
@@ -66,13 +65,10 @@ public class SlotGenerator {
                             hourcount = 1;
                             subjectno++;
                         }
-
                     }
-
                 }
             }
         }
-
     }
 
     public static Slot[] returnSlots() {

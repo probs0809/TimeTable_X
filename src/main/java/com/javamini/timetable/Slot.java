@@ -14,7 +14,6 @@ public class Slot {
     public int teacherid;
     public String subject;
 
-    //non parametrized constructor for allowing free periods
     Slot(){};
 
     Slot(StudentGroup studentgroup,int teacherid,String subject){

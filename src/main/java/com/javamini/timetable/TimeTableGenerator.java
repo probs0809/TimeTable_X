@@ -23,7 +23,7 @@ public class TimeTableGenerator {
     
     static DatabaseConnection db = new DatabaseConnection();
     static boolean cli = false;
-    
+    //debugging purpose only
     public static void printInputData(){
         
         System.out.println("Nostgrp="+AssignTeacher.nostudentgroup+" Noteachers="+AssignTeacher.noteacher+" daysperweek="+AssignTeacher.daysperweek+" hoursperday="+AssignTeacher.hoursperday);
@@ -223,8 +223,6 @@ public class TimeTableGenerator {
             generateTimeTable.day.addItem(day1);
         });
         generateTimeTable.day.setSelectedIndex(0);
-        
-        
         generateTimeTable.hour.removeAllItems();
         generateTimeTable.hour.addItem("Select Hour");
         hour.forEach((hr) -> {
@@ -237,8 +235,6 @@ public class TimeTableGenerator {
         arr.forEach((ar) -> {
             generateTimeTable.sub.addItem(Subject.getSubjectName(SlotGenerator.slot[ar].subject));
         });
-        generateTimeTable.sub.setSelectedIndex(0);
-        
-        
+        generateTimeTable.sub.setSelectedIndex(0);       
     }
 }
