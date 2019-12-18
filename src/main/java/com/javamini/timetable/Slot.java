@@ -14,13 +14,14 @@ public class Slot {
     public int teacherid;
     public String subject;
 
-    Slot(){};
+    Slot() {
+    };
 
-    Slot(StudentGroup studentgroup,int teacherid,String subject){
+    Slot(StudentGroup studentgroup, int teacherid, String subject) {
 
-            this.studentgroup=studentgroup;
-            this.subject=subject;
-            this.teacherid=teacherid;
+        this.studentgroup = studentgroup;
+        this.subject = subject;
+        this.teacherid = teacherid;
 
     }
 }

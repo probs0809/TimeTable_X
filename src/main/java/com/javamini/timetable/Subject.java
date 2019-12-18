@@ -18,15 +18,16 @@ public class Subject {
     String name;
     Teacher[] teacher;
     int noteachers;
-    Subject(){
-            teacher=new Teacher[20];
+
+    Subject() {
+        teacher = new Teacher[20];
     }
-    
-    static String getSubjectName(String id){
+
+    static String getSubjectName(String id) {
         DatabaseConnection db = new DatabaseConnection();
-        ResultSet rs = db.executeQuery("SELECT * FROM Subject WHERE SubId = '"+id+"'");
+        ResultSet rs = db.executeQuery("SELECT * FROM Subject WHERE SubId = '" + id + "'");
         try {
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getString("SubName");
             }
         } catch (SQLException ex) {
@@ -34,12 +35,12 @@ public class Subject {
         }
         return "No_Name_Fround";
     }
-    
-    static String getSubjectId(String Name){
+
+    static String getSubjectId(String Name) {
         DatabaseConnection db = new DatabaseConnection();
-        ResultSet rs = db.executeQuery("SELECT * FROM Subject WHERE SubName = '"+Name+"'");
+        ResultSet rs = db.executeQuery("SELECT * FROM Subject WHERE SubName = '" + Name + "'");
         try {
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getString("SubId");
             }
         } catch (SQLException ex) {
