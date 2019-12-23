@@ -60,8 +60,7 @@ public class TimeTableGenerator {
         }
     }
 
-    public static void generateTimeTable(int GrpId, ArrayList<String> day, ArrayList<String> hour,
-            GenerateTimeTable genTimeTable, ViewTimeTable v) {
+    public static void generateTimeTable(int GrpId, ArrayList<String> day, ArrayList<String> hour,GenerateTimeTable genTimeTable, ViewTimeTable v) {
         int days = AssignTeacher.daysperweek;
         int hours = AssignTeacher.hoursperday;
         int nostgrp = AssignTeacher.nostudentgroup;
