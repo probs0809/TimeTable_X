@@ -1,4 +1,4 @@
-# Time Table Plus Plus
+# Time Table x
 
 ## Launch Screen:
 In this screen, there are four different option which is used to open different interface screen that will help to create a time table, the different options are:
